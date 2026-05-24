@@ -1,3 +1,6 @@
 pytest==8.3.5
 selenium==3.141.0
+# ChromeDriver instaluje się osobno: przez Homebrew, webdriver-manager
+# albo ręcznie. Selenium 3 nie ma Selenium Managera.
+# urllib3<2 jest potrzebne dla zgodności z selenium==3.141.0.
 urllib3<2

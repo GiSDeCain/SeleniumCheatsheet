@@ -1,12 +1,10 @@
 """Selenium 4 element finding with By locators and basic actions."""
 
 import pytest
-from selenium.webdriver.common.by import By
 
 from selenium4_examples.pages.example_page import (
     ADD_REMOVE_LINK,
     BUTTON_CLASS,
-    FORM_CONTROLS,
     PAGE_HEADING,
     PARTIAL_LINK,
     THE_INTERNET_URL,
@@ -60,9 +58,8 @@ def test_can_find_many_elements_by_css_selector(driver):
     page = ExamplePage(driver)
     page.open_web_form()
 
-    controls = driver.find_elements(By.CSS_SELECTOR, ".form-control")
+    controls = page.form_controls()
 
-    assert len(controls) == len(page.find_all(FORM_CONTROLS))
     assert len(controls) >= 5
 
 
@@ -71,10 +68,10 @@ def test_can_use_class_name_tag_name_and_partial_link_text(driver):
     page.open_web_form()
 
     heading = driver.find_element(*PAGE_HEADING)
-    submit_button = driver.find_element(*BUTTON_CLASS)
+    first_btn_element = driver.find_element(*BUTTON_CLASS)
 
     assert heading.tag_name == "h1"
-    assert submit_button.is_displayed()
+    assert first_btn_element.is_displayed()
 
     driver.get(THE_INTERNET_URL)
     add_remove_link = driver.find_element(*ADD_REMOVE_LINK)

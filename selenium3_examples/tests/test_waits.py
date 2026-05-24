@@ -44,10 +44,13 @@ def test_can_wait_until_element_is_clickable(driver):
 def test_can_wait_until_url_changes_after_submit(driver):
     driver.get(WEB_FORM_URL)
 
+    wait = WebDriverWait(driver, 10)
     driver.find_element_by_id(TEXT_INPUT_ID).send_keys("wait example")
-    driver.find_element_by_css_selector(SUBMIT_BUTTON_CSS).click()
+    wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, SUBMIT_BUTTON_CSS))
+    ).click()
 
-    WebDriverWait(driver, 10).until(EC.url_contains("submitted-form.html"))
+    wait.until(EC.url_contains("submitted-form.html"))
     assert "submitted-form.html" in driver.current_url
 
 
@@ -73,3 +76,8 @@ def test_anti_pattern_time_sleep_instead_of_wait(driver):
 
     text_input = driver.find_element_by_id(TEXT_INPUT_ID)
     assert text_input.is_displayed()
+
+    # Wariant poprawny — czeka dokładnie tyle, ile trzeba, i tylko na to, na czym nam zależy:
+    #     WebDriverWait(driver, 10).until(
+    #         EC.visibility_of_element_located((By.ID, TEXT_INPUT_ID))
+    #     )

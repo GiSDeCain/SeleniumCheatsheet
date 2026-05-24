@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 import selenium
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 
@@ -20,7 +21,7 @@ EXAMPLES_ROOT = Path(__file__).parent.resolve()
 # komunikatem zamiast wybuchać niezrozumiałym ImportError.
 # To jest "pytest-magic" — nie musisz rozumieć tego kodu linijka po linijce,
 # żeby pisać własne testy. Patrz README, sekcja "Mechanizm skip drugiej wersji".
-def pytest_collection_modifyitems(items):
+def pytest_collection_modifyitems(session, config, items):
     """Skip Selenium 4 examples when the active virtualenv has Selenium 3."""
     if SELENIUM_MAJOR_VERSION == "4":
         return
@@ -29,13 +30,22 @@ def pytest_collection_modifyitems(items):
         reason="Selenium 4 examples require selenium==4.x. Use requirements-selenium4.txt."
     )
     for item in items:
-        if Path(str(item.fspath)).resolve().is_relative_to(EXAMPLES_ROOT):
+        if is_path_inside(Path(str(item.fspath)).resolve(), EXAMPLES_ROOT):
             item.add_marker(skip)
+
+
+def is_path_inside(path, parent):
+    """Return True when path is located under parent."""
+    try:
+        path.relative_to(parent)
+    except ValueError:
+        return False
+    return True
 
 
 def build_chrome_options():
     """Create ChromeOptions in the Selenium 4 style."""
-    options = webdriver.ChromeOptions()
+    options = Options()
     options.add_argument(f"--window-size={WINDOW_SIZE}")
 
     # `os.getenv("HEADLESS", "")` zwraca wartość zmiennej środowiskowej HEADLESS
@@ -52,6 +62,10 @@ def build_chrome_options():
 @pytest.fixture
 def driver():
     """Start and close Chrome for every test.
+
+    Fixture scope is function by default: fresh browser session per test gives
+    clean isolation, but costs more time. In larger suites you can consider
+    scope="module" after explaining the isolation trade-off.
 
     In Selenium 4, webdriver.Chrome(options=options) can use Selenium Manager.
     If CHROMEDRIVER_PATH is set, the explicit Service(...) style is shown instead.

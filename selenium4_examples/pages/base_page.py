@@ -47,10 +47,3 @@ class BasePage:
 
     def wait_until_clickable(self, locator):
         return self.wait.until(EC.element_to_be_clickable(locator))
-
-
-# Skrót — pozwala napisać `(CSS, "...")` zamiast `(By.CSS_SELECTOR, "...")`.
-# Domyślnie nie jest używany w przykładach (testy używają pełnego By.CSS_SELECTOR
-# dla czytelności), ale zostawiony jako wzór, jeśli mentee chce sobie skrócić
-# kod we własnych Page Objectach.
-CSS = By.CSS_SELECTOR

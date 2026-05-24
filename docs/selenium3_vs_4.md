@@ -15,6 +15,8 @@ driver = webdriver.Chrome(executable_path="chromedriver")
 ```
 
 `executable_path` to historyczny styl. W starszych projektach jest częsty, ale w Selenium 4 został zastąpiony przez `Service`.
+W Selenium 4.10+ argument `executable_path` został usunięty, więc stary snippet
+rzuci `TypeError`, jeśli uruchomisz go w środowisku Selenium 4.
 
 Selenium 4 z Selenium Managerem:
 
@@ -53,6 +55,9 @@ driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
 driver.find_elements(By.CSS_SELECTOR, ".item")
 ```
 
+Metody `find_element_by_*` i `find_elements_by_*` nie są tylko przestarzałe.
+W Selenium 4 zostały usunięte i kończą się `AttributeError`.
+
 ## Czekanie
 
 Mechanizm `WebDriverWait` i `expected_conditions` wygląda podobnie w obu wersjach:
@@ -65,6 +70,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 wait = WebDriverWait(driver, 10)
 button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button")))
 ```
+
+## Częste gotche migracji 3 -> 4
+
+- `desired_capabilities` przenoś do `options.set_capability(...)`.
+- Logi Chrome konfiguruj przez capability w options, np. `goog:loggingPrefs`.
+- Stare przełączanie okien `driver.switch_to_window(...)` zastąp przez
+  `driver.switch_to.window(...)`.
+- `executable_path=...` zastąp przez `Service(...)` albo pozwól Selenium
+  Managerowi dobrać driver automatycznie.
+- `find_element_by_*` zastąp przez `find_element(By..., value)`.
 
 ## Praktyczna rekomendacja
 

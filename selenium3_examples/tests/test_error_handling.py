@@ -51,7 +51,9 @@ def test_stale_element_reference_after_page_refresh(driver):
 
 def test_element_click_intercepted_when_overlay_covers_button(driver):
     driver.get(WEB_FORM_URL)
-    button = driver.find_element_by_css_selector(SUBMIT_BUTTON_CSS)
+    button = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, SUBMIT_BUTTON_CSS))
+    )
 
     # The overlay simulates a common UI problem: modal, banner or loader covering the target.
     # UWAGA dydaktyczna: `driver.execute_script(...)` wstrzykuje kod JavaScript w

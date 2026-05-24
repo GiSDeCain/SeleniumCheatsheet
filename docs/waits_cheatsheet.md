@@ -24,6 +24,10 @@ button.click()
 - `url_contains` - adres strony zawiera oczekiwany fragment.
 - `title_contains` - tytuł strony zawiera oczekiwany fragment.
 - `staleness_of` - poprzedni element został odłączony od DOM.
+- `text_to_be_present_in_element` - element zawiera oczekiwany tekst.
+- `invisibility_of_element_located` - loader, modal albo overlay zniknął.
+- `alert_is_present` - pojawił się alert JavaScript.
+- `number_of_windows_to_be` - otworzyła się oczekiwana liczba okien lub kart.
 
 ## Czego nie robić
 

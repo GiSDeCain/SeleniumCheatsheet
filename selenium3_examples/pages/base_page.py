@@ -9,7 +9,11 @@ DEFAULT_TIMEOUT = 10
 
 
 class BasePage:
-    """Common browser actions shared by simple Page Objects."""
+    """Common browser actions shared by simple Page Objects.
+
+    This file intentionally uses Selenium 3-only find_element_by_* methods.
+    In Selenium 4 those methods are removed and raise AttributeError.
+    """
 
     def __init__(self, driver, timeout=DEFAULT_TIMEOUT):
         self.driver = driver

@@ -12,7 +12,7 @@ def test_can_open_page_and_read_title_and_url(driver):
     driver.get(WEB_FORM_URL)
 
     assert "Web form" in driver.title
-    assert driver.current_url == WEB_FORM_URL
+    assert WEB_FORM_URL in driver.current_url
 
 
 def test_can_use_back_forward_and_refresh(driver):
@@ -20,7 +20,7 @@ def test_can_use_back_forward_and_refresh(driver):
     start_url = driver.current_url
 
     driver.get(WEB_FORM_URL)
-    assert driver.current_url == WEB_FORM_URL
+    assert WEB_FORM_URL in driver.current_url
 
     driver.back()
     # Porównanie przez `in` zamiast `==`, bo serwer może dopisać/zmienić trailing slash
@@ -28,7 +28,7 @@ def test_can_use_back_forward_and_refresh(driver):
     assert start_url in driver.current_url
 
     driver.forward()
-    assert driver.current_url == WEB_FORM_URL
+    assert WEB_FORM_URL in driver.current_url
 
     driver.refresh()
     assert "Web form" in driver.title

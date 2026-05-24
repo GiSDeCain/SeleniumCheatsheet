@@ -30,6 +30,8 @@ driver.find_elements_by_css_selector(".form-control")
 ```
 
 Ten styl jest historyczny. W nowych projektach używaj `find_element(By..., value)`.
+W Selenium 4 metody `find_element_by_*` zostały usunięte, więc ich wywołanie
+skończy się `AttributeError`.
 
 ## Rekomendowana kolejność wyboru
 
